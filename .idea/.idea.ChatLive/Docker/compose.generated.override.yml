@@ -1,0 +1,22 @@
+# This is a generated file. Not intended for manual editing.
+version: "3.8"
+services:
+  backend:
+    build:
+      context: "/media/bwx1y/Script/ChatLive"
+      dockerfile: "ChatLive/Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net8.0/ChatLive.dll"
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+    image: "backend:dev"
+    ports: []
+    volumes:
+    - "/media/bwx1y/Script/ChatLive/ChatLive:/app:rw"
+    - "/media/bwx1y/Script/ChatLive:/src:rw"
+    - "/home/bwx1y/.nuget/packages:/home/app/.nuget/packages"
+    working_dir: "/app"
