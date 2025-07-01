@@ -10,6 +10,7 @@ services:
       - chat-live-mysql-data:/var/lib/mysql
     networks:
       - chat-live-network 
+    command: --default-authentication-plugin=mysql_native_password --bind-address=0.0.0.0
   
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -36,7 +37,9 @@ services:
     networks:
       - chat-live-network
     environment:
+      ASPNETCORE_ENVIRONMENT: Production
       ConnectionStrings__DefaultConnection: "Server=mysql;Database=chat_live_db;User=root;Password=admin_password;"
+      
     ports:
       - "8080"
   
