@@ -10,7 +10,6 @@ services:
       - chat-live-mysql-data:/var/lib/mysql
     networks:
       - chat-live-network 
-    command: --bind-address=0.0.0.0
   
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
