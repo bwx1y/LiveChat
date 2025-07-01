@@ -1,4 +1,4 @@
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import type {AuthResponse, LoginGmailPath, LoginGmailRequest} from "@/model/auth-model.ts";
 import {apiService} from "@/lib/api-service.ts";
@@ -43,31 +43,35 @@ export function LoginGmail() {
     const [searchParams] = useSearchParams();
     const code = searchParams.get("code");
     const {setToken, key} = useAuth()
+    const [loading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
         if (code == null || key != null) {
             navigate("/");
         } else {
-            apiService.post<AuthResponse, LoginGmailRequest>("Auth/Callback-Gmail", {
-                key: null,
-                body: {code}
-            }).then(({data}) => {
-                if (data) {
-                    setToken(data.token.key)
+            if (!loading) {
+                setLoading(true)
+                apiService.post<AuthResponse, LoginGmailRequest>("Auth/Callback-Gmail", {
+                    key: null,
+                    body: {code}
+                }).then(({data}) => {
+                    if (data) {
+                        setToken(data.token.key)
 
-                    Toast.fire({
-                        icon: "success",
-                        title: "Success",
-                        text: `You have been successfully logged in!`,
-                    })
-                } else {
-                    Toast.fire({
-                        icon: "error",
-                        title: "Error",
-                        text: `You have not logged in!`,
-                    }).then(() => navigate("/"))
-                }
-            })
+                        Toast.fire({
+                            icon: "success",
+                            title: "Success",
+                            text: `You have been successfully logged in!`,
+                        })
+                    } else {
+                        Toast.fire({
+                            icon: "error",
+                            title: "Error",
+                            text: `You have not logged in!`,
+                        }).then(() => navigate("/"))
+                    }
+                })
+            }
         }
     }, [])
 
